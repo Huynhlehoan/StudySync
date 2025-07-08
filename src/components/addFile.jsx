@@ -1,0 +1,4 @@
+
+const AddFile = ({ onClose, onAdd })=>{
+
+}
