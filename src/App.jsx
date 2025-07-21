@@ -7,6 +7,7 @@ import File from './pages/file'
 import TodoList from './pages/TodoList'
 import Profile from './components/Profile'
 import Upload from './components/Upload'
+import Settings from './components/settings'
 
 function App() {
   const [activeSection, setActiveSection] = useState('Home')

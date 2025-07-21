@@ -95,8 +95,57 @@ const File = () => {
             <option>All</option>
             <option>PDF</option>
             <option>Video</option>
+            <option>Image</option>
+            <option>Docs</option>
+            <option>PowerPoint</option>
           </select>
         </div>
+      </div>
+
+      {/* storage */}
+      <div className='bg-white rounded-xl p-3'>
+       
+          <p className="text-sm text-gray-600 mb-1">Storage used: 1.3 GB / 5 GB</p>
+          {/* thanh storage và 2 btn */}
+          <div className='flex'>
+                 {/* thanh storage */}
+                <div className='flex bg-gray-200  h-8 rounded-sm w-[60rem] mr-3 '>
+                    <div
+                    className="bg-indigo-300 h-8 rounded-sm"
+                    style={{ width: '26%' }} 
+                  />
+                  <div
+                    className="bg-pink-300 h-8 rounded-sm"
+                    style={{ width: '10%' }} 
+                  />
+                  <div
+                    className="bg-green-300 h-8 rounded-sm"
+                    style={{ width: '5%' }} 
+                  />
+                </div>
+             {/* button */}
+              <button className='rounded-xl bg-indigo-200  shadow-2xl mr-2 px-3 py-1.5'>View bin</button>
+              <button className='rounded-xl bg-black text-white border-2 shadow-2xl px-3 py-1.5'>Select all</button>
+          </div>
+
+          {/* chú thích cho storage */}
+            <div className='flex mt-2'>
+              <div  className="bg-indigo-300 h-5 rounded-sm mr-2"
+                    style={{ width: '2%' }} />
+                    <p>Documents</p>
+
+                    <div  className="bg-pink-300 h-5 rounded-sm ml-5 mr-2"
+                    style={{ width: '2%' }} />
+                    <p>Video</p>
+
+                    <div  className="bg-green-300 h-5 rounded-sm ml-5 mr-2"
+                    style={{ width: '2%' }} />
+                    <p>Image</p>
+
+
+            </div>
+    
+
       </div>
 
       {/* Grid of files */}
@@ -107,11 +156,12 @@ const File = () => {
               <div className="text-4xl">
                 {getFileIcon(file.type)}
               </div>
-              <span className="text-xs px-2 py-1 rounded-full font-semibold text-white"
-                style={{ backgroundColor: getTagColor(file.tag) }}
-              >
-                {file.tag}
-              </span>
+             <span
+              className={`text-xs px-2 py-1 rounded-full font-semibold text-white ${getTagColor(file.tag)}`}
+            >
+              {file.tag}
+            </span>
+
             </div>
             <div className="text-xs text-right text-gray-500">{file.size}</div>
             <div className="font-semibold leading-snug text-[15px]">
@@ -135,18 +185,14 @@ const File = () => {
 }
 
 // 🎨 Lấy màu tag
-function getTagColor(tag) {
-  switch (tag) {
-    case "Java": return "#a5b4fc"
-    case "React": return "#fca5a5"
-    case "English": return "#d1d5db"
-    case "Chinese": return "#fde68a"
-    case "UX/UI": return "#fbcfe8"
-    case "NoSQL": return "#86efac"
-    case "other": return "#e9d5ff"
-    default: return "#ccc"
-  }
+function getTagColor(tagName) {
+  const tag = TAGS.find(t => t.name === tagName); 
+  // tìm object trong TAGS mà t.name === tagName
+
+  return tag ? tag.color : "bg-gray-400"; 
+  // nếu tìm được thì trả về tag.color, ngược lại trả về màu xám mặc định
 }
+
 
 // 📁 Icon file
 function getFileIcon(type) {

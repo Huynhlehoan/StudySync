@@ -4,11 +4,13 @@ import NotifyDropdown from './NotificationDropdown'
 import { FiSearch, FiBell, FiChevronDown } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import DropdownAcc from './DropdownAcc'
+import Settings from './settings'
 
 function Header() {
   const [showProfile, setShowProfile] = useState(false)
  const [showNotify, setShowNotify]= useState(false);
  const [showAcc, setShowAcc]= useState(false);
+ const [showSettings, setShowSettings]= useState(false);
  
   return (
     <>
@@ -43,7 +45,11 @@ function Header() {
           <FiChevronDown className="text-gray-500" />
           {showAcc &&
            
-              <DropdownAcc onProfileClick={() => setShowProfile(true)} />
+              <DropdownAcc 
+                  onProfileClick={() => setShowProfile(true)}
+                  OnSettingsClick={()=> setShowSettings(true)}
+              
+              />
             
           }
         </div>
@@ -69,6 +75,13 @@ function Header() {
     <Profile onClose={() => setShowProfile(false)} />
   </div>
 )}
+
+  {showSettings && (
+    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+      <Settings onClose={()=> setShowSettings(false)}/>
+    </div>
+  )
+  }
 </>
   )
 }

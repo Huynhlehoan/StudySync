@@ -14,10 +14,7 @@ const Profile = ({ onClose }) => {
         <div className="flex flex-col items-center gap-3 text-center relative">
 
         {/* 1. Nút edit góc phải */}
-        <button className="absolute top-0 right-0 bg-gray-200 hover:bg-gray-300 p-2 rounded-full">
-            <FaEdit />
-        </button>
-
+       
         {/* 2. Avatar + icon camera */}
         <div className="relative">
             <img
@@ -25,9 +22,7 @@ const Profile = ({ onClose }) => {
             alt="avatar"
             className="w-28 h-28 rounded-full object-cover"
             />
-            <button className="absolute bottom-1 right-1 bg-gray-200 p-1 rounded-full hover:bg-gray-300">
-            <i className="fas fa-camera" /> {/* icon thay đổi ảnh */}
-            </button>
+        
         </div>
 
         {/* 3. Username + joined */}
@@ -67,7 +62,7 @@ const Profile = ({ onClose }) => {
     {/* fullname */}
     <div className="flex items-center">
         <label className="w-32">Full Name</label>
-        <input
+        <input disabled
         type="text"
         placeholder="Name"
         className="w-full border border-gray-400 rounded-lg hover:border-blue-400 p-2 placeholder-black peer invalid:border-red-500 outline-none"
@@ -77,7 +72,7 @@ const Profile = ({ onClose }) => {
     {/* phone */}
     <div className="flex items-center">
         <label className="w-32">Phone</label>
-        <input
+        <input disabled
         type="text"
         placeholder="0931481507"
         className="w-full border border-gray-400 rounded-lg hover:border-blue-400 p-2 placeholder-black peer invalid:border-red-500 outline-none"
@@ -87,7 +82,7 @@ const Profile = ({ onClose }) => {
     {/* Email */}
     <div className="flex items-center">
         <label className=" w-32">Email</label>
-        <input
+        <input disabled
         type="text"
         placeholder="abc@gmail.com"
         className=" w-full border border-gray-400 rounded-lg hover:border-blue-400 p-2 placeholder-black peer invalid:border-red-500 outline-none"
@@ -97,7 +92,7 @@ const Profile = ({ onClose }) => {
     {/* Location */}
     <div className="flex items-center">
         <label className="w-32">Location</label>
-        <input
+        <input disabled
         type="text"
         placeholder="HCMC, VN"
         className="w-full border border-gray-400 rounded-lg hover:border-blue-400 p-2 placeholder-black peer invalid:border-red-500 outline-none"
