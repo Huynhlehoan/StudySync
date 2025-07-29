@@ -5,10 +5,7 @@ import { Routes,Route } from 'react-router-dom'
 import Schedule from './pages/Schedule'
 import File from './pages/file'
 import TodoList from './pages/TodoList'
-import Profile from './components/Profile'
-import Upload from './components/Upload'
-import Settings from './components/settings'
-
+import EditFile from './components/EditFile'
 function App() {
   const [activeSection, setActiveSection] = useState('Home')
 
@@ -23,8 +20,8 @@ function App() {
         </Route>
        
       </Routes>
-
      
+ 
   )
 }
 

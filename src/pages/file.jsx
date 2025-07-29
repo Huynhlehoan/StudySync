@@ -1,6 +1,14 @@
 import React from 'react'
 import { useState } from 'react'
 import Upload from '../components/Upload'
+import { FiMoreVertical } from "react-icons/fi";
+import DropdownSelect from '../components/dropDownSelect';
+import DropDownSelectAll from '../components/dropDownSelectAll';
+import { FiArrowDown,FiTrash2 } from "react-icons/fi";
+import ViewBin from '../components/viewBin';
+import EditFile from '../components/EditFile';
+
+
 const TAGS = [
   { name: "Java", color: "bg-indigo-300" },
   { name: "React", color: "bg-rose-300" },
@@ -13,6 +21,7 @@ const TAGS = [
 
 const FILES = [
   {
+    id:1,
     type: "pdf",
     tag: "React",
     size: "125MB",
@@ -20,6 +29,7 @@ const FILES = [
     time: "12:02 6/27/2025"
   },
   {
+    id:2,
     type: "word",
     tag: "Java",
     size: "55MB",
@@ -27,6 +37,7 @@ const FILES = [
     time: "12:02 6/27/2025"
   },
   {
+    id:3,
     type: "excel",
     tag: "NoSQL",
     size: "15MB",
@@ -34,6 +45,7 @@ const FILES = [
     time: "12:02 6/27/2025"
   },
   {
+    id:4,
     type: "ppt",
     tag: "React",
     size: "125MB",
@@ -48,6 +60,7 @@ const FILES = [
     time: "12:02 6/27/2025"
   },
   {
+    id:5,
     type: "video",
     tag: "React",
     size: "125MB",
@@ -55,6 +68,7 @@ const FILES = [
     time: "12:02 6/27/2025"
   },
   {
+    id:6,
     type: "img",
     tag: "other",
     size: "125KB",
@@ -62,6 +76,7 @@ const FILES = [
     time: "12:02 6/27/2025"
   },
   {
+    id:7,
     type: "img",
     tag: "other",
     size: "205KB",
@@ -71,8 +86,42 @@ const FILES = [
 ]
 
 const File = () => {
+
+  const [activeDropdownIdx, setActiveDropdownIdx]= useState(null); // state ql hiện dropdown cho dấu 3 chấm (cho từng id)
+  const [showSelect, setShowSelect]= useState(false); // qli hiển thị dropdown chỗ Select ra 
   const [showUpload, setShowUpload]=useState(false);
-  return (
+  const [showViewBin, setShowViewBin]= useState(false); // qli modal viewBin
+  const [showEditFile, setShowEditFile]= useState(false);
+
+  const [selectMode, setSelectMode] = useState(false); // đang bật chọn?
+  const [selectedIds, setSelectedIds] = useState([]); // chứa các id file đã chọn
+
+  const toggleSelectMode = () => {
+    setSelectMode(true);
+    
+  };
+  // xu li bo chon file
+const handleToggleFile = (id) => {
+  if (selectedIds.includes(id)) {
+    setSelectedIds(selectedIds.filter(fid => fid !== id));
+  } else {
+    setSelectedIds([...selectedIds, id]); 
+  }
+};
+
+const handleDownloadSelected = () => {
+  console.log("Download files with ids:", selectedIds);
+  // xử lý download thật sẽ làm sau
+};
+
+const handleRemoveSelected = () => {
+  console.log("Remove files with ids:", selectedIds);
+  // xử lý xoá thật sẽ làm sau
+};
+
+
+
+    return (
     <div className="p-6 space-y-6">
       {/* Top bar */}
       <div className="flex items-center justify-between flex-wrap gap-4">
@@ -91,7 +140,7 @@ const File = () => {
           <button className="bg-indigo-300 text-white px-4 py-2 rounded-lg shadow font-semibold" onClick={()=>setShowUpload(true)}>
             Upload
           </button>
-          <select className="bg-gray-200 rounded-lg px-3 py-2 text-sm shadow">
+          <select className="bg-gray-300 text-white rounded-lg px-3 py-2 text-sm shadow">
             <option>All</option>
             <option>PDF</option>
             <option>Video</option>
@@ -124,9 +173,37 @@ const File = () => {
                   />
                 </div>
              {/* button */}
-              <button className='rounded-xl bg-indigo-200  shadow-2xl mr-2 px-3 py-1.5'>View bin</button>
-              <button className='rounded-xl bg-black text-white border-2 shadow-2xl px-3 py-1.5'>Select all</button>
+              <button className='rounded-xl bg-indigo-200  shadow-2xl mr-2 px-3 py-1.5' onClick={()=>setShowViewBin(true)}>View bin</button>
+             <div className='relative'>
+            <button
+              onClick={() => {
+                if (selectMode) {
+                  // Nếu đang ở chế độ chọn → Cancel
+                  setSelectMode(false);
+                  setShowSelect(false);
+                  setSelectedIds([]); // bỏ hết lựa chọn
+                  setActiveDropdownIdx(null); // tắt dropdown nếu đang mở
+                } else {
+                  // Bật chế độ chọn
+                  setSelectMode(true);
+                  setShowSelect(true);
+                }
+              }}
+              className='border-2 rounded-xl shadow-2xl hover:bg-gray-200 px-3 py-1.5'
+            >
+              {selectMode ? "Cancel" : "Select files"}
+              
+            </button>
+
           </div>
+
+          
+             
+
+
+          </div>
+       
+
 
           {/* chú thích cho storage */}
             <div className='flex mt-2'>
@@ -141,17 +218,72 @@ const File = () => {
                     <div  className="bg-green-300 h-5 rounded-sm ml-5 mr-2"
                     style={{ width: '2%' }} />
                     <p>Image</p>
-
-
+                  
+                
             </div>
     
-
-      </div>
+     </div>
+     <div className='flex gap-2 p-3'>
+                        {selectMode && (
+                <button
+                  className="mb-4 ml-3 px-3 py-1 bg-blue-500 text-white rounded"
+                  onClick={() => {
+                    if (selectedIds.length === FILES.length) {
+                      setSelectedIds([]); // Deselect all
+                    } else {
+                      setSelectedIds(FILES.map(f => f.id)); // Select all
+                    }
+                  }}
+                >
+                  {selectedIds.length === FILES.length ? "Cancel" : "Select all"}
+                </button>
+              )}
+                    {/* down và xoá */}
+              {selectedIds.length > 0 && (
+                <div className="flex gap-2 mt-4">
+                    <div className="flex p-3 items-center hover:bg-gray-300">
+                      <FiArrowDown className="mr-3 " />
+                      <p>Download</p>
+                    </div>
+            
+                <div className="flex p-3 items-center hover:bg-gray-300">
+                      <FiTrash2 className="mr-3 " />
+                      <p>Remove</p>
+                </div>
+                      </div>
+              )}
+                  </div>
 
       {/* Grid of files */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {FILES.map((file, idx) => (
           <div key={idx} className="bg-gray-100 p-4 rounded-xl shadow space-y-1">
+            <div className='flex '>
+                   {selectMode && (
+            <input
+              type="checkbox"
+              checked={selectedIds.includes(file.id)}
+              onChange={(e) => handleToggleFile(file.id)}
+            />
+           )}
+           <div className='relative ml-60'>
+              <FiMoreVertical
+                className='ml-auto cursor-pointer'
+                onClick={() => setActiveDropdownIdx(activeDropdownIdx === idx ? null : idx)}
+              />
+              {activeDropdownIdx === idx && (
+                <div className="absolute top-2 right-24 z-50">
+                  <DropdownSelect onEditClick={
+                    ()=> setShowEditFile(true)
+                  
+                  } />
+                </div>
+              )}
+            </div>
+            </div>
+       
+
+           
             <div className="flex items-center justify-between">
               <div className="text-4xl">
                 {getFileIcon(file.type)}
@@ -180,6 +312,20 @@ const File = () => {
           </div>
         )
       }
+      {showViewBin &&(
+        <div className='bg-black/40 fixed inset-0 z-50 items-center justify-center'>
+          <ViewBin onClose={
+            ()=> setShowViewBin(false)
+          }
+          />
+
+        </div>
+      )}
+      {showEditFile && (
+  <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+    <EditFile onClose={() => setShowEditFile(false)} />
+  </div>
+)}
     </div>
   )
 }
